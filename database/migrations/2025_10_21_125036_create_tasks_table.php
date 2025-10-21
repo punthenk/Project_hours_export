@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->string('name', 150);
             $table->tinyText('description', 200);
-            $table->boolean('completed');
-            $table->time('worked_time');
+            $table->boolean('completed')->default(0);
+            $table->time('worked_time')->default(0);
             $table->timestamps();
         });
     }

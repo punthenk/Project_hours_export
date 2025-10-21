@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -27,7 +28,20 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'name' => 'required|string|max:40',
+            'description' => 'required|string|max:75',
+        ], [
+            'name.required' => 'Please give the project a name',
+        ]);
+
+        Task::create([
+            'name' => $validate['name'],
+            'description' => $validate['description'],
+            'project_id' => $request->project_id,
+        ]);
+
+        return redirect()->back();
     }
 
     /**
