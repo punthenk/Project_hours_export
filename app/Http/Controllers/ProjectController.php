@@ -13,7 +13,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with("user")->get();
+        $projects = auth()->user()->projects()->get();
 
         return view("dashboard", ["projects" => $projects]);
     }
