@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WorkedSession;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WorkedSessionController extends Controller
 {
@@ -27,7 +29,29 @@ class WorkedSessionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate(
+            [
+                'started_at' => 'required|date_format:H:i',
+                'stopped_at' => 'required|date_format:H:i|after:started_at',
+            ],
+            [
+                'started_at.required' => "Please fill in the time",
+                'stopped_at.required' => "Please fill in the time",
+            ]
+        );
+
+        $start = \Carbon\Carbon::createFromFormat('H:i', $validated['started_at']);
+        $end = \Carbon\Carbon::createFromFormat('H:i', $validated['stopped_at']);
+        $duration = $start->diffInMinutes($end);
+
+        WorkedSession::create([
+            'task_id' => $request->task,
+            'started_at' => $start->format('H:i:s'),
+            'stopped_at' => $end->format('H:i:s'),
+            'duration' => $duration,
+        ]);
+
+        return redirect()->back();
     }
 
     /**

@@ -9,8 +9,8 @@ class WorkedSession extends Model
 {
     protected $fillable = [
         'task_id',
-        'start_time',
-        'end_time',
+        'started_at',
+        'stopped_at',
         'duration',
     ];
 

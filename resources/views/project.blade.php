@@ -19,19 +19,40 @@
         <!-- Time Entry -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <h3 class="text-lg font-medium mb-4">Manual Time Entry</h3>
-            <div class="grid grid-cols-[1fr_1fr_auto] gap-4 mb-6 items-end">
-                <div>
-                    <label class="block text-sm text-gray-500 mb-1">Started Working</label>
-                    <input type="time" id="started_at" class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+            <form method="POST" action="{{ route('sessions.store' ) }}" id="session-form">
+                @csrf
+                <div class="grid grid-cols-[1fr_1fr_auto_auto] gap-4 mb-6 items-end">
+                    <div>
+                        <label class="block text-sm text-gray-500 mb-1">Started Working</label>
+                        <input type="time" id="started_at" name="started_at" class="@error('started_at') focus:ring-red-500 text-red @enderror w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500 mb-1">Stopped Working</label>
+                        <input type="time" id="stopped_at" name="stopped_at" class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500 mb-1">Task</label>
+                        <select name="task" id="task_dropdown" class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                                <option value="none">No task</option>
+                            @forelse ($project->tasks as $task)
+                                <option value="{{ $task->id }}">{{ $task->name }}</option>
+                            @empty
+                                <option value="none">No task to choose</option>
+                            @endforelse
+                        </select>
+                    </div>
+                    <div>
+                        <button id="add-session-btn" class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-1 h-9 rounded-lg disabled:bg-gray-400" disabled>+ Add Session</button>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm text-gray-500 mb-1">Stopped Working</label>
-                    <input type="time" id="stopped_at" class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                @error('started_at')
+                <div class="label">
+                    <div class="label">
+                        <span class="label-text-alt text-red-500">{{ $message }}</span>
+                    </div>
                 </div>
-                <div>
-                    <button id="add-session-btn" class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-1 h-9 rounded-lg disabled:bg-gray-400" disabled>+ Add Session</button>
-                </div>
-            </div>
+                @enderror
+            </form>
 
             <div class="flex items-center justify-between">
                 <div>
