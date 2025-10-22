@@ -13,7 +13,11 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl font-semibold">{{ $project->name }}</h1>
-            <span class="text-sm text-gray-600">Total: {{ $project->worked_time }} h</span>
+            @php
+            $hours = floor($project->worked_time);
+            $minutes = round(($project->worked_time - $hours) * 60);
+            @endphp
+            <span class="text-sm text-gray-600">Total: {{ $hours }}h {{ $minutes }}m</span>
         </div>
 
         <!-- Time Entry -->
@@ -29,7 +33,7 @@
                     </div>
                     <div>
                         <label class="block text-sm text-gray-500 mb-1">Stopped Working</label>
-                        <input type="time" id="stopped_at" name="stopped_at" value="{{ old('stopped_at') }}"
+                        <input type="time" id="stopped_at" name="stopped_at" value="{{ old('stopped_at') }}" proje.
                             class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                     </div>
                     <div>
@@ -99,11 +103,25 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2 text-sm text-gray-600">
-                        <span>{{ $task->time_spent ?? '0h 0m' }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 cursor-pointer" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9" />
-                        </svg>
+                        <span>{{ intdiv($task->worked_time ?? 0, 60) }}h {{ ($task->worked_time ?? 0) % 60 }}m</span>
+                        <form method="POST" action="/project/{{ $project->id }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="inline-flex items-center justify-center text-sm font-medium hover:bg-gray-300 hover:text-accent-foreground dark:hover:bg-accent/50 h-8 rounded-md gap-1.5 px-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onclick="return confirm('Are you sure you want to delete this project? This action can not be undone!')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-trash2 size-4 text-muted-foreground"
+                                    aria-hidden="true">
+                                    <path d="M10 11v6"></path>
+                                    <path d="M14 11v6"></path>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                    <path d="M3 6h18"></path>
+                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
                 @empty
