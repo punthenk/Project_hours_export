@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="">
+    <div class="max-w-6xl mx-auto">
         <!-- Back Button -->
         <a href="/"><button
             class="flex items-center text-sm text-gray-600 hover:bg-gray-300 hover:text-gray-800 transition p-2 rounded-lg mb-6">
@@ -19,19 +19,17 @@
         <!-- Time Entry -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <h3 class="text-lg font-medium mb-4">Manual Time Entry</h3>
-            <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-[1fr_1fr_auto] gap-4 mb-6 items-end">
                 <div>
                     <label class="block text-sm text-gray-500 mb-1">Started Working</label>
-                    <input type="time" class="w-full border-none rounded px-3 py-2 text-sm bg-gray-200">
+                    <input type="time" id="started_at" class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                 </div>
                 <div>
                     <label class="block text-sm text-gray-500 mb-1">Stopped Working</label>
-                    <input type="time" class="w-full border-none rounded px-3 py-2 text-sm bg-gray-200">
+                    <input type="time" id="stopped_at" class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-500 mb-1">Time Worked</label>
-                    <input type="text" placeholder="e.g., 2h 30m"
-                        class="w-full border-none rounded px-3 py-2 text-sm bg-gray-200">
+                    <button id="add-session-btn" class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-1 h-9 rounded-lg disabled:bg-gray-400" disabled>+ Add Session</button>
                 </div>
             </div>
 
@@ -118,6 +116,4 @@
             </form>
         </div>
     </div>
-
-    <script src="{{ asset('js/task-modal.js') }}"></script>
 </x-app-layout>

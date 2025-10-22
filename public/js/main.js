@@ -25,6 +25,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    const started = document.getElementById('started_at');
+    const stopped = document.getElementById('stopped_at');
+    const btn = document.getElementById('add-session-btn');
+
+    if (!started || !stopped || !btn) return;
+
+    [started, stopped].forEach(input => {
+        input.addEventListener('input', () => {
+            btn.disabled = !(started.value && stopped.value);
+        });
+    });
+
 });
 
 
