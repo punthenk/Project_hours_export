@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name', 150);
             $table->tinyText('description', 200);
             $table->boolean('completed')->default(0);
-            $table->time('worked_time')->default(0);
+            $table->integer('worked_time')->default(0);
             $table->timestamps();
         });
     }

@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             $project = Project::create([
                 'user_id' => $user->id,
                 'name' => "Project $i",
-                'worked_time' => fake()->randomFloat(2, 0, 40),
+                'worked_time' => 0,
             ]);
 
             foreach (range(1, 5) as $j) {
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
                     'name' => "Task $j for Project $i",
                     'description' => fake()->sentence(8),
                     'completed' => fake()->boolean(30),
-                    'worked_time' => fake()->time('H:i:s', '08:00:00'),
+                    'worked_time' => 0,
                 ]);
             }
         }

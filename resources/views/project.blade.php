@@ -24,12 +24,12 @@
                 <div class="grid grid-cols-[1fr_1fr_auto_auto] gap-4 mb-6 items-end">
                     <div>
                         <label class="block text-sm text-gray-500 mb-1">Started Working</label>
-                        <input type="time" id="started_at" name="started_at"
+                        <input type="time" id="started_at" name="started_at" value="{{ old('started_at') }}"
                             class="@error('started_at') focus:ring-red-500 text-red @enderror w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                     </div>
                     <div>
                         <label class="block text-sm text-gray-500 mb-1">Stopped Working</label>
-                        <input type="time" id="stopped_at" name="stopped_at"
+                        <input type="time" id="stopped_at" name="stopped_at" value="{{ old('stopped_at') }}"
                             class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                     </div>
                     <div>

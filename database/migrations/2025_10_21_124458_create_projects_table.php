@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->decimal('worked_time', 5, 2)->default(0);
+            $table->decimal('worked_time', 8, 2)->default(0);
             $table->timestamps();
         });
     }

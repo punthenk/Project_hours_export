@@ -14,6 +14,13 @@ class Project extends Model
         'worked_time',
     ];
 
+    public function updateWorkedTime()
+    {
+        $total_minutes = $this->tasks()->sum('worked_time');
+        $this->worked_time = round($total_minutes / 60, 2); // 2 decimalen, bv. 6.40
+        $this->saveQuietly();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

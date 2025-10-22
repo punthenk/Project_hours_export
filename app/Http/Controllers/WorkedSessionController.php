@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\WorkedSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +56,9 @@ class WorkedSessionController extends Controller
             'stopped_at' => $end->format('H:i:s'),
             'duration' => $duration,
         ]);
+
+        $task = Task::find($validated['task_id']);
+        $task->updateWorkedTime();
 
         return redirect()->back();
     }
