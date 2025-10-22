@@ -12,6 +12,7 @@ Route::resource('tasks', TaskController::class);
 Route::middleware('auth')->group(function () {
     Route::get('/', [ProjectController::class, 'index']);
     Route::get('/project/{project}', [ProjectController::class, 'show']);
+    Route::put('/task/{task}/toggle', [TaskController::class, 'toggleChecked'])->name('task.toggle');
     Route::delete('project/{id}', [ProjectController::class, 'destroy']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

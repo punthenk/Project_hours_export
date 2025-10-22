@@ -48,8 +48,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Close modal when clicking outside the content
     modal.addEventListener('click', (e) => {
-        if(e.target === modal) {
+        if (e.target === modal) {
             modal.classList.add('hidden');
         }
+    });
+});
+
+document.querySelectorAll('.task-toggle').forEach(checkbox => {
+    checkbox.addEventListener('change', async e => {
+        const id = e.target.dataset.id;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const response = await fetch(`/task/${id}/toggle`, {
+           method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: '{}'
+        });
+        if (!response.ok) alert('Update failed');
+        const data = await response.json();
+        const nameEl = e.target.closest('.flex').querySelector('p');
+        nameEl.classList.toggle('line-through', data.completed);
+        nameEl.classList.toggle('text-gray-500', data.completed);
+        nameEl.classList.toggle('text-gray-800', !data.completed);
     });
 });

@@ -68,6 +68,12 @@ class TaskController extends Controller
         //
     }
 
+    public function toggleChecked(Task $task)
+    {
+        $task->update(['completed' => !$task->completed]);
+        return response()->json(['completed' => $task->completed]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

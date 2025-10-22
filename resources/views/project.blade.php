@@ -62,7 +62,10 @@
                 @forelse ($project->tasks as $task)
                 <div class="flex items-start justify-between p-4 border border-gray-200 rounded-lg">
                     <div class="flex gap-3">
-                        <input type="checkbox" @checked($task->completed) class="mt-1">
+                        <input type="checkbox" @checked($task->completed)
+                            class="mt-1 task-toggle"
+                            data-id="{{ $task->id }}"
+                        >
                         <div>
                             <p class="{{ $task->completed ? 'line-through text-gray-500' : 'text-gray-800' }}">{{
                                 $task->name }}</p>
