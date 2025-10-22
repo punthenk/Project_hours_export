@@ -2,13 +2,13 @@
     <div class="max-w-6xl mx-auto">
         <!-- Back Button -->
         <a href="/"><button
-            class="flex items-center text-sm text-gray-600 hover:bg-gray-300 hover:text-gray-800 transition p-2 rounded-lg mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Projects
-        </button></a>
+                class="flex items-center text-sm text-gray-600 hover:bg-gray-300 hover:text-gray-800 transition p-2 rounded-lg mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to Projects
+            </button></a>
 
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
@@ -24,34 +24,41 @@
                 <div class="grid grid-cols-[1fr_1fr_auto_auto] gap-4 mb-6 items-end">
                     <div>
                         <label class="block text-sm text-gray-500 mb-1">Started Working</label>
-                        <input type="time" id="started_at" name="started_at" class="@error('started_at') focus:ring-red-500 text-red @enderror w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                        <input type="time" id="started_at" name="started_at"
+                            class="@error('started_at') focus:ring-red-500 text-red @enderror w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                     </div>
                     <div>
                         <label class="block text-sm text-gray-500 mb-1">Stopped Working</label>
-                        <input type="time" id="stopped_at" name="stopped_at" class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                        <input type="time" id="stopped_at" name="stopped_at"
+                            class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                     </div>
                     <div>
                         <label class="block text-sm text-gray-500 mb-1">Task</label>
-                        <select name="task" id="task_dropdown" class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
-                                <option value="none">No task</option>
-                            @forelse ($project->tasks as $task)
-                                <option value="{{ $task->id }}">{{ $task->name }}</option>
-                            @empty
-                                <option value="none">No task to choose</option>
-                            @endforelse
+                        <select name="task_id" id="task_dropdown"
+                            class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                            @if($project->tasks->isEmpty())
+                            <option value="">No tasks available. Please create a task first.</option>
+                            @else
+                            <option value="">Select a task</option>
+                            @foreach($project->tasks as $task)
+                            <option value="{{ $task->id }}">{{ $task->name }}</option>
+                            @endforeach
+                            @endif
                         </select>
                     </div>
                     <div>
-                        <button id="add-session-btn" class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-1 h-9 rounded-lg disabled:bg-gray-400" disabled>+ Add Session</button>
+                        <button id="add-session-btn"
+                            class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-1 h-9 rounded-lg disabled:bg-gray-400"
+                            disabled>+ Add Session</button>
                     </div>
                 </div>
-                @error('started_at')
-                <div class="label">
-                    <div class="label">
-                        <span class="label-text-alt text-red-500">{{ $message }}</span>
-                    </div>
-                </div>
-                @enderror
+                @if ($errors->any())
+                <ul>
+                    @foreach($errors->all() as $error)
+                    <li class="text-red-500">{{ $error }}</li>
+                    @endforeach
+                </ul>
+                @endif
             </form>
 
             <div class="flex items-center justify-between">
@@ -82,8 +89,8 @@
                 <div class="flex items-start justify-between p-4 border border-gray-200 rounded-lg">
                     <div class="flex gap-3">
                         <input type="checkbox" @checked($task->completed)
-                            class="mt-1 task-toggle"
-                            data-id="{{ $task->id }}"
+                        class="mt-1 task-toggle"
+                        data-id="{{ $task->id }}"
                         >
                         <div>
                             <p class="{{ $task->completed ? 'line-through text-gray-500' : 'text-gray-800' }}">{{

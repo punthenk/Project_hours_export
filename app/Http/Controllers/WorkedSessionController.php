@@ -33,19 +33,24 @@ class WorkedSessionController extends Controller
             [
                 'started_at' => 'required|date_format:H:i',
                 'stopped_at' => 'required|date_format:H:i|after:started_at',
+                'task_id' => 'required|exists:tasks,id',
             ],
             [
-                'started_at.required' => "Please fill in the time",
-                'stopped_at.required' => "Please fill in the time",
+                'started_at.required' => "Please fill in the started time",
+                'stopped_at.required' => "Please fill in the stopped time",
+                'stopped_at.exists' => "Your strart time must be before you stopped",
+                'task_id.required' => "You must select a task or create one first",
+                'task_id.exists' => "Selected task does not exist",
             ]
         );
+
 
         $start = \Carbon\Carbon::createFromFormat('H:i', $validated['started_at']);
         $end = \Carbon\Carbon::createFromFormat('H:i', $validated['stopped_at']);
         $duration = $start->diffInMinutes($end);
 
         WorkedSession::create([
-            'task_id' => $request->task,
+            'task_id' => $validated['task_id'],
             'started_at' => $start->format('H:i:s'),
             'stopped_at' => $end->format('H:i:s'),
             'duration' => $duration,
