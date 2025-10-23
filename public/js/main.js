@@ -87,3 +87,44 @@ document.querySelectorAll('.task-toggle').forEach(checkbox => {
         nameEl.classList.toggle('text-gray-800', !data.completed);
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButton = document.getElementById('filterButton');
+    const taskItems = document.querySelectorAll('.task-item');
+
+    // Filter states: 'all', 'completed', 'uncompleted'
+    let currentFilter = 'all';
+
+    if (!filterButton || !taskItems) return;
+
+    filterButton.addEventListener('click', function() {
+        // Cycle through filters
+        if (currentFilter === 'all') {
+            currentFilter = 'completed';
+            filterButton.textContent = 'Only Completed';
+            filterButton.classList.add('bg-blue-100');
+        } else if (currentFilter === 'completed') {
+            currentFilter = 'uncompleted';
+            filterButton.textContent = 'Only Uncompleted';
+        } else {
+            currentFilter = 'all';
+            filterButton.textContent = 'All Tasks';
+            filterButton.classList.remove('bg-blue-100');
+        }
+
+        // Apply filter
+        taskItems.forEach(task => {
+            const isCompleted = task.dataset.completed === 'true';
+
+            if (currentFilter === 'all') {
+                task.style.display = 'flex';
+            } else if (currentFilter === 'completed' && isCompleted) {
+                task.style.display = 'flex';
+            } else if (currentFilter === 'uncompleted' && !isCompleted) {
+                task.style.display = 'flex';
+            } else {
+                task.style.display = 'none';
+            }
+        });
+    });
+});

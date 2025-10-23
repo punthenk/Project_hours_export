@@ -78,19 +78,26 @@
         <div class="bg-white rounded-lg shadow p-6">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-medium">Tasks</h3>
-                <button id="openTaskModal"
-                    class="flex items-center text-sm hover:bg-gray-200 border border-gray-300 rounded px-3 py-1 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Add Task
-                </button>
+                <div class="flex gap-2">
+                    <button id="filterButton"
+                        class="text-sm hover:bg-gray-200 border-none rounded px-3 py-1 transition">
+                        All Tasks
+                    </button>
+                    <button id="openTaskModal"
+                        class="flex items-center text-sm hover:bg-gray-200 border border-gray-300 rounded px-3 py-1 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Add Task
+                    </button>
+                </div>
             </div>
 
             <div class="space-y-3">
                 @forelse ($project->tasks as $task)
-                <div class="flex items-start justify-between p-4 border border-gray-200 rounded-lg">
+                <div class="task-item flex items-start justify-between p-4 border border-gray-200 rounded-lg"
+                    data-completed="{{ $task->completed ? 'true' : 'false' }}">
                     <div class="flex gap-3">
                         <input type="checkbox" @checked($task->completed)
                         class="mt-1 task-toggle"
