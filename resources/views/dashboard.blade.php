@@ -71,8 +71,8 @@
                 <input type="color" name="color" class="w-full h-10 rounded">
                 <div class="flex justify-end gap-2">
                     <button type="button" id="modal-cancel"
-                        class="border border-gray-300 px-4 py-2 rounded">Cancel</button>
-                    <button type="submit" class="bg-gray-900 text-white px-4 py-2 rounded">Create</button>
+                        class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Create</button>
                 </div>
             </form>
         </div>
@@ -90,7 +90,7 @@
                 <p>Account created at: <span class="font-bold">{{ Auth::user()->created_at->toDateString() }}</span></p>
                 <div class="flex justify-end gap-2">
                     <button type="button" id="user-modal-close"
-                        class="border border-gray-300 px-4 py-2 rounded">Close</button>
+                        class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Close</button>
                 </div>
             </form>
         </div>
