@@ -35,7 +35,7 @@
                         </div>
                         <div class="text-right min-w-[80px]">
                             <div class="text-gray-600">Time</div>
-                            <div>4h 40m</div>
+                            <div>{{ $project->total_worked_time }}</div>
                         </div>
                         <x-popup id="delete-task-{{ $project->id }}" title="WARNING"
                             message="Are you sure you want to delete this project? This action can not be undone."

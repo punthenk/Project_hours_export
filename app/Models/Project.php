@@ -26,6 +26,13 @@ class Project extends Model
         return $this->tasks->filter(fn($task) => $task->completed)->count();
     }
 
+    public function getTotalWorkedTimeAttribute()
+    {
+        $hours = floor($this->worked_time);
+        $minutes = round(($this->worked_time - $hours) * 60);
+        return $hours."h ".$minutes."m";
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

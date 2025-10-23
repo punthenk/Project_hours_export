@@ -13,11 +13,7 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl font-semibold">{{ $project->name }}</h1>
-            @php
-            $hours = floor($project->worked_time);
-            $minutes = round(($project->worked_time - $hours) * 60);
-            @endphp
-            <span class="text-sm text-gray-600">Total: {{ $hours }}h {{ $minutes }}m</span>
+            <span class="text-sm text-gray-600">Total: {{ $project->total_worked_time }}</span>
         </div>
 
         <!-- Time Entry -->
