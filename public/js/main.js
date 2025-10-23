@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!taskModal || !taskOpenBtn || !taskCancelBtn) return;
 
     taskOpenBtn.addEventListener("click", () => {
-        console.log("HELLO");
         taskModal.classList.remove("hidden");
     });
 
@@ -43,6 +42,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById('new-project-modal');
     const openBtn = document.getElementById('new-project-btn');
     const cancelBtn = document.getElementById('modal-cancel');
+
+    if (!openBtn || !modal || !cancelBtn) return;
+
+    openBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    // Close modal when clicking outside the content
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Modal toggle
+    const modal = document.getElementById('user-info-modal');
+    const openBtn = document.getElementById('open-user-modal-btn');
+    const cancelBtn = document.getElementById('user-modal-close');
 
     if (!openBtn || !modal || !cancelBtn) return;
 

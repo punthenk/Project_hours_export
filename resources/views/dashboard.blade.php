@@ -78,12 +78,31 @@
         </div>
     </div>
 
+    <!-- User info modal -->
+    <div id="user-info-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h2 class="text-xl font-semibold mb-4">Account Info</h2>
+            <form action="{{ route('projects.store') }}" method="POST" class="space-y-4">
+                @csrf
+                <p>Username: <span class="font-bold">{{ Auth::user()->name }}</span></p>
+                <p>Email: <span class="font-bold">{{ Auth::user()->email }}</span></p>
+                <p>Last updated at: <span class="font-bold">{{ Auth::user()->updated_at->toDateString() }}</span></p>
+                <p>Account created at: <span class="font-bold">{{ Auth::user()->created_at->toDateString() }}</span></p>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="user-modal-close"
+                        class="border border-gray-300 px-4 py-2 rounded">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     @auth
     <div
         class="fixed bottom-0 left-0 w-full flex items-center justify-between bg-gray-100 text-gray-700 px-6 py-3 border-t border-gray-300">
-        <div class="font-medium">
+        <button type="submit" id="open-user-modal-btn"
+            class="text-sm text-gray-600 hover:text-gray-900 p-3 hover:bg-gray-300 rounded-lg transition">
             {{ Auth::user()->name }}
-        </div>
+        </button>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
