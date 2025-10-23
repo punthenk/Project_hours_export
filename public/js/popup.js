@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
     popupButton.forEach(button => {
         button.addEventListener("click", (event) => {
             event.preventDefault();
-            console.log("Clicked on the popup button");
         });
     });
 });
