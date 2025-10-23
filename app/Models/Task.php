@@ -15,17 +15,6 @@ class Task extends Model
         'worked_time',
     ];
 
-    public static function booted()
-    {
-        static::updated(function ($task) {
-            $task->updateWorkedTime();
-        });
-
-        static::created(function ($task) {
-            $task->updateWorkedTime();
-        });
-    }
-
     public function updateWorkedTime()
     {
         $total = $this->workedSession()->sum('duration');

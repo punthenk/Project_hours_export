@@ -104,12 +104,12 @@
                     </div>
                     <div class="flex items-center gap-2 text-sm text-gray-600">
                         <span>{{ intdiv($task->worked_time ?? 0, 60) }}h {{ ($task->worked_time ?? 0) % 60 }}m</span>
-                        <form method="POST" action="/project/{{ $project->id }}">
+                        <form method="POST" action="{{ route('tasks.destroy', $task->id) }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="inline-flex items-center justify-center text-sm font-medium hover:bg-gray-300 hover:text-accent-foreground dark:hover:bg-accent/50 h-8 rounded-md gap-1.5 px-3 opacity-0 group-hover:opacity-100 transition-opacity"
-                                onclick="return confirm('Are you sure you want to delete this project? This action can not be undone!')">
+                                class="inline-flex items-center justify-center text-sm font-medium hover:bg-gray-200 dark:hover:bg-accent/50 h-8 rounded-md gap-1.5 px-3 opacity-50 hover:opacity-100 transition-opacity"
+                                onclick="return confirm('Are you sure you want to delete this task? This action can not be undone!')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-trash2 size-4 text-muted-foreground"
