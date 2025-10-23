@@ -111,24 +111,23 @@
                     </div>
                     <div class="flex items-center gap-2 text-sm text-gray-600">
                         <span>{{ intdiv($task->worked_time ?? 0, 60) }}h {{ ($task->worked_time ?? 0) % 60 }}m</span>
-                        <form method="POST" action="{{ route('tasks.destroy', $task->id) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="inline-flex items-center justify-center text-sm font-medium hover:bg-gray-200 dark:hover:bg-accent/50 h-8 rounded-md gap-1.5 px-3 opacity-50 hover:opacity-100 transition-opacity"
-                                onclick="return confirm('Are you sure you want to delete this task? This action can not be undone!')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-trash2 size-4 text-muted-foreground"
-                                    aria-hidden="true">
-                                    <path d="M10 11v6"></path>
-                                    <path d="M14 11v6"></path>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                                    <path d="M3 6h18"></path>
-                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                </svg>
-                            </button>
-                        </form>
+                        <x-popup
+                            id="delete-task-{{ $task->id }}"
+                            title="WARNING"
+                            message="Are you sure you want to delete this task? This action can not be undone and the time you worked on this will be deleted."
+                            confirmText="Delete"
+                            confirmRoute="{{ route('tasks.destroy', $task->id) }}"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-trash2 size-4 text-muted-foreground" aria-hidden="true">
+                                <path d="M10 11v6"></path>
+                                <path d="M14 11v6"></path>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                <path d="M3 6h18"></path>
+                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </x-popup>
                     </div>
                 </div>
                 @empty
