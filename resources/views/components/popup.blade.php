@@ -7,7 +7,7 @@
 ])
 
 <button type="button" command="show-modal" commandfor="dialog-{{ $attributes->get('id') ?? 'default' }}"
-    class="rounded-md px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10">
+    class="popup-open-button rounded-md px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10">
     {{ $slot }}
 </button>
 
