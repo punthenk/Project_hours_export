@@ -31,22 +31,19 @@
                     <div class="flex items-center gap-8 shrink-0">
                         <div class="text-right">
                             <div class="text-gray-600">Tasks</div>
-                            <div>2 / 3</div>
+                            <div>{{ $project->completed_tasks_count }} / {{ $project->tasks->count() }}</div>
                         </div>
                         <div class="text-right min-w-[80px]">
                             <div class="text-gray-600">Time</div>
                             <div>4h 40m</div>
                         </div>
-                        <x-popup
-                            id="delete-task-{{ $project->id }}"
-                            title="WARNING"
+                        <x-popup id="delete-task-{{ $project->id }}" title="WARNING"
                             message="Are you sure you want to delete this project? This action can not be undone."
-                            confirmText="Delete"
-                            confirmRoute="{{ route('projects.destroy', $project->id) }}"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="lucide lucide-trash2 size-4 text-muted-foreground" aria-hidden="true">
+                            confirmText="Delete" confirmRoute="{{ route('projects.destroy', $project->id) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trash2 size-4 text-muted-foreground"
+                                aria-hidden="true">
                                 <path d="M10 11v6"></path>
                                 <path d="M14 11v6"></path>
                                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
@@ -82,14 +79,16 @@
     </div>
 
     @auth
-    <div class="fixed bottom-0 left-0 w-full flex items-center justify-between bg-gray-100 text-gray-700 px-6 py-3 border-t border-gray-300">
+    <div
+        class="fixed bottom-0 left-0 w-full flex items-center justify-between bg-gray-100 text-gray-700 px-6 py-3 border-t border-gray-300">
         <div class="font-medium">
             {{ Auth::user()->name }}
         </div>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="text-sm text-gray-600 hover:text-gray-900 p-3 hover:bg-gray-300 rounded-lg transition">
+            <button type="submit"
+                class="text-sm text-gray-600 hover:text-gray-900 p-3 hover:bg-gray-300 rounded-lg transition">
                 Logout
             </button>
         </form>

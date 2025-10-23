@@ -21,6 +21,11 @@ class Project extends Model
         $this->saveQuietly();
     }
 
+    public function getCompletedTasksCountAttribute()
+    {
+        return $this->tasks->filter(fn($task) => $task->completed)->count();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
