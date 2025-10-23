@@ -51,6 +51,9 @@
                                 <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                             </svg>
                         </x-popup>
+                        <form action="{{ route('project.export', $project->id) }}" method="GET">
+                            <button id="export-btn" type="submit" class="text-gray-900 rounded-md px-2.5 py-1.5 text-sm font-semibold hover:bg-gray-900 hover:text-white transition">Export</button>
+                        </form>
                     </div>
                 </a>
                 @empty

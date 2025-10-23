@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProjectExport;
+use Maatwebsite\Excel\Excel;
 use App\Models\Project;
-use App\Models\Task;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -76,5 +77,16 @@ class ProjectController extends Controller
         Project::where('id', $id)->delete();
 
         return redirect()->back();
+    }
+
+    public function export(Project $project, Excel $excel)
+    {
+        if ($project->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $filename = 'urenregistratie_' . $project->name . '_' . now()->format('Y-m-d') . '.xlsx';
+
+        return $excel->download(new ProjectExport($project), $filename);
     }
 }

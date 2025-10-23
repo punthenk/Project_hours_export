@@ -7,11 +7,10 @@ use App\Http\Controllers\WorkedSessionController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::resource('projects', ProjectController::class);
-Route::resource('tasks', TaskController::class);
-Route::resource('sessions', WorkedSessionController::class);
 
 Route::middleware('auth')->group(function () {
+    Route::get('/project/{project}/export', [ProjectController::class, 'export'])->name('project.export');
+
     Route::get('/', [ProjectController::class, 'index']);
     Route::get('/project/{project}', [ProjectController::class, 'show']);
     Route::put('/task/{task}/toggle', [TaskController::class, 'toggleChecked'])->name('task.toggle');
@@ -20,6 +19,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
+
+Route::resource('projects', ProjectController::class);
+Route::resource('tasks', TaskController::class);
+Route::resource('sessions', WorkedSessionController::class);
 
 require __DIR__.'/auth.php';
