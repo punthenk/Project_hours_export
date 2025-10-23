@@ -3,10 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const taskOpenBtn = document.getElementById("openTaskModal");
     const taskCancelBtn = document.getElementById("cancelTaskModal");
 
-    console.log(taskModal);
-    console.log(taskOpenBtn);
-    console.log(taskCancelBtn);
-
     if (!taskModal || !taskOpenBtn || !taskCancelBtn) return;
 
     taskOpenBtn.addEventListener("click", () => {
