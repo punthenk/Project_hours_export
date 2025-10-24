@@ -4,6 +4,8 @@
 
         <!-- Name Field -->
         <div>
+            <p class="text-gray-500 text-xs mb-5">Note: your name will be used in the excel export as your real name.
+                Also your name can be your full name or firstname only. Think about it. It is your decision :)</p>
             <!-- Custom Label -->
             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
 
@@ -28,6 +30,9 @@
             @enderror
         </div>
 
+        <p class="text-gray-500 text-xs mb-5">I'm sorry to say it is currently not possible to change
+        your password. So please think about what your password is and do not forget it!. It will be possible
+        to change your password as soon as possible.</p>
         <!-- Password Field -->
         <div>
             <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
