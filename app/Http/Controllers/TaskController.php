@@ -31,7 +31,7 @@ class TaskController extends Controller
         $validate = $request->validate(
             [
                 'name' => 'required|string|max:40',
-                'description' => 'required|string|max:75',
+                'description' => 'required|string|max:255',
             ],
             [
                 'name.required' => 'Please give the project a name',
@@ -70,7 +70,7 @@ class TaskController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:150',
-            'description' => 'required|string|max:500',
+            'description' => 'required|string|max:255',
             'worked_time' => 'nullable|numeric|min:0',
         ]);
 

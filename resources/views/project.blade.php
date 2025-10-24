@@ -156,14 +156,14 @@
 
                 <div>
                     <label class="block text-sm text-gray-700 mb-1">Task Name</label>
-                    <input type="text" name="name" placeholder="Enter task name"
+                    <input type="text" name="name" placeholder="Enter task name" value="{{ old('name') }}"
                         class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                 </div>
 
                 <div>
                     <label class="block text-sm text-gray-700 mb-1">Description</label>
-                    <textarea name="description" placeholder="Enter task description"
-                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200"></textarea>
+                    <textarea name="description" placeholder="Enter task description" maxlength="255"
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">{{ old('description')}}</textarea>
                 </div>
 
                 <div class="flex justify-end gap-2 mt-6">
@@ -192,7 +192,7 @@
 
                 <div>
                     <label class="block text-sm text-gray-700 mb-1">Description</label>
-                    <textarea name="description" placeholder="Enter task description"
+                    <textarea name="description" placeholder="Enter task description" maxlength="255"
                         class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200"></textarea>
                 </div>
 
