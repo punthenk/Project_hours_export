@@ -12,6 +12,7 @@ class Project extends Model
         'user_id',
         'name',
         'worked_time',
+        'color',
     ];
 
     public function updateWorkedTime()

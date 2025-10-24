@@ -34,6 +34,7 @@ class ProjectController extends Controller
     {
         $validate = $request->validate([
             'name' => 'required|string|max:40',
+            'color' => 'required|string|max:7',
         ], [
             'message.required' => 'Please give the project a name',
         ]);

@@ -24,7 +24,7 @@
                 @forelse ($projects as $project)
                 <a href="/project/{{ $project->id }}"
                     class="group flex items-center gap-6 py-4 px-6 -mx-6 hover:bg-gray-200 transition-colors cursor-pointer border-b border-gray-200 last:border-0 block">
-                    <div class="w-1 h-12 rounded-full shrink-0" style="background-color: rgb(123, 137, 168);"></div>
+                    <div class="w-1 h-12 rounded-full shrink-0" style="background-color: {{ $project->color }}"></div>
                     <div class="flex-1 min-w-0">
                         <h3 class="mb-1 font-semibold">{{ $project->name }}</h3>
                     </div>
@@ -80,7 +80,8 @@
                     </div>
                     @enderror
                 </div>
-                <input type="color" name="color" class="w-full h-10 rounded">
+                <label for="color" class="block text-sm text-gray-700 mb-1">Give your project a color!</label>
+                <input type="color" name="color" class="w-full h-7 rounded cursor-pointer" value="#2f7ca2">
                 <div class="flex justify-end gap-2">
                     <button type="button" id="modal-cancel"
                         class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Cancel</button>
