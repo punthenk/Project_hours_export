@@ -109,6 +109,11 @@ class ProjectExport implements FromArray, WithStyles, WithColumnWidths
             'A1:A3' => $bold,
             6 => $bold,
             'D37' => $bold,
+            'A7' => $bold,  // Maandag
+            'A11' => $bold, // Disdag
+            'A16' => $bold, // Woensdag
+            'A21' => $bold, // Donderdag
+            'A29' => $bold, // Vrijdag
         ];
     }
 
