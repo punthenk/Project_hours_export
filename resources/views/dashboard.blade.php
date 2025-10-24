@@ -57,7 +57,7 @@
                     </div>
                 </a>
                 @empty
-                <p>No projects yet.</p>
+                <p>No projects yet. Create one!</p>
                 @endforelse
             </div>
         </div>
@@ -69,8 +69,17 @@
             <h2 class="text-xl font-semibold mb-4">Create Project</h2>
             <form action="{{ route('projects.store') }}" method="POST" class="space-y-4">
                 @csrf
-                <input type="text" name="name" placeholder="Project Name"
-                    class="w-full border border-gray-300 rounded px-3 py-2">
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Project Name</label>
+                    <input type="text" name="name" placeholder="Enter task name"
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200" required>
+
+                    @error('name')
+                    <div class="label">
+                        <span class="label-text-alt text-red-500">{{ $message }}</span>
+                    </div>
+                    @enderror
+                </div>
                 <input type="color" name="color" class="w-full h-10 rounded">
                 <div class="flex justify-end gap-2">
                     <button type="button" id="modal-cancel"

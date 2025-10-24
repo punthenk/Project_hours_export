@@ -40,7 +40,7 @@ class ProjectController extends Controller
 
         auth()->user()->projects()->create($validate);
 
-        return redirect('/')->with('success', 'Your chirp has been posted!');
+        return redirect()->back();
     }
 
     /**
