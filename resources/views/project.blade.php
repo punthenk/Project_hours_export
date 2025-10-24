@@ -107,16 +107,27 @@
                     </div>
                     <div class="flex items-center gap-2 text-sm text-gray-600">
                         <span>{{ intdiv($task->worked_time ?? 0, 60) }}h {{ ($task->worked_time ?? 0) % 60 }}m</span>
-                        <x-popup
-                            id="delete-task-{{ $task->id }}"
-                            title="WARNING"
+                        <button data-slot="button"
+                            data-id="{{ $task->id }}"
+                            data-name="{{ $task->name }}"
+                            data-description="{{ $task->description }}"
+                            data-worked_time="{{ $task->worked_time }}"
+                            class="change-task-button rounded-md px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-pencil size-4" aria-hidden="true">
+                                <path
+                                    d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z">
+                                </path>
+                                <path d="m15 5 4 4"></path>
+                            </svg></button>
+                        <x-popup id="delete-task-{{ $task->id }}" title="WARNING"
                             message="Are you sure you want to delete this task? This action can not be undone and the time you worked on this will be deleted."
-                            confirmText="Delete"
-                            confirmRoute="{{ route('tasks.destroy', $task->id) }}"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="lucide lucide-trash2 size-4 text-muted-foreground" aria-hidden="true">
+                            confirmText="Delete" confirmRoute="{{ route('tasks.destroy', $task->id) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trash2 size-4 text-muted-foreground"
+                                aria-hidden="true">
                                 <path d="M10 11v6"></path>
                                 <path d="M14 11v6"></path>
                                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
@@ -146,13 +157,13 @@
                 <div>
                     <label class="block text-sm text-gray-700 mb-1">Task Name</label>
                     <input type="text" name="name" placeholder="Enter task name"
-                        class="w-full border-none rounded px-3 py-2 text-sm bg-gray-200">
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
                 </div>
 
                 <div>
                     <label class="block text-sm text-gray-700 mb-1">Description</label>
                     <textarea name="description" placeholder="Enter task description"
-                        class="w-full border-none rounded px-3 py-2 text-sm bg-gray-200"></textarea>
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200"></textarea>
                 </div>
 
                 <div class="flex justify-end gap-2 mt-6">
@@ -160,6 +171,35 @@
                         class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Cancel</button>
                     <button type="submit" class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Add
                         Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="update-task-modal"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <h2 class="text-lg font-semibold mb-4">Edit Task</h2>
+
+            <form class="space-y-4" action="#" method="POST" id="update-task-form">
+                @csrf
+                @method('PUT')
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Task Name</label>
+                    <input type="text" name="name" placeholder="Enter task name"
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Description</label>
+                    <textarea name="description" placeholder="Enter task description"
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" id="cancel-update-task-modal"
+                        class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Update Task</button>
                 </div>
             </form>
         </div>

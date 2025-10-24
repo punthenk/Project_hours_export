@@ -66,9 +66,17 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Task $task)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:150',
+            'description' => 'required|string|max:500',
+            'worked_time' => 'nullable|numeric|min:0',
+        ]);
+
+        $task->update($validated);
+
+        return redirect()->back();
     }
 
     public function toggleChecked(Task $task)
