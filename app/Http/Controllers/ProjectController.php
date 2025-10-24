@@ -48,9 +48,19 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        $project = Project::with('tasks')->findOrFail($id);
+        $project = Project::with(['tasks.workedSession'])->findOrFail($id);
 
-        return view('project', ['project' => $project]);
+        $sessions = $project->tasks->flatMap(fn($task) =>
+            $task->workedSession->map(fn($session) => [
+                'task_name' => $task->name,
+                'started_at' => $session->started_at,
+                'stopped_at' => $session->stopped_at,
+                'duration' => $session->duration,
+                'date' => $session->created_at->toDateString(),
+            ])
+        )->sortBy('started_at')->groupBy('date');
+
+        return view('project', compact('project', 'sessions'));
     }
 
     /**

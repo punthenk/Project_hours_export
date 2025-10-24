@@ -61,12 +61,39 @@
                 @endif
             </form>
 
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-500 mb-1">Live Timer</p>
-                    <p class="text-4xl">00:00:00</p>
+            <!-- <div class="flex items-center justify-between"> -->
+            <!--     <div> -->
+            <!--         <p class="text-sm text-gray-500 mb-1">Live Timer</p> -->
+            <!--         <p class="text-4xl">00:00:00</p> -->
+            <!--     </div> -->
+            <!--     <button class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2 rounded-md">Start</button> -->
+            <!-- </div> -->
+
+            <div class="h-[1px] w-full bg-gray-200"> </div>
+            <div class="flex items-center justify-between mt-6">
+                <div class="w-full">
+                    <div class="flex justify-between">
+                        <button class="session-show-button rounded-md px-2.5 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-950/10">Show sessions</button>
+                    </div>
+                    <div class="sessions-container hidden">
+                        @foreach ($sessions as $date => $daySessions)
+                        <p class="my-3">{{ \Carbon\Carbon::parse($date)->format('M j') }}</p>
+                        @foreach ($daySessions as $session)
+
+                        <div class="task-item flex w-full items-start justify-between p-4 mb-3 border border-gray-200 rounded-lg">
+                            <p class="text-gray-500">{{ \Carbon\Carbon::parse($session['started_at'])->format('H:i') }} -
+                                {{ \Carbon\Carbon::parse($session['stopped_at'])->format('H:i') }}
+                                <span>{{ intdiv($session['duration'] ?? 0, 60) }}h {{ ($session['duration'] ?? 0) % 60 }}m</span>
+                            </p>
+                            <p class="text-gray-500">
+                                {{ $task->name }}
+                            </p>
+                        </div>
+                        @endforeach
+                        @endforeach
+                        <button class="session-hide-button rounded-md px-2.5 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-950/10">Hide Sessions</button>
+                    </div>
                 </div>
-                <button class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2 rounded-md">Start</button>
             </div>
         </div>
 

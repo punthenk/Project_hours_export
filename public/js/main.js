@@ -148,3 +148,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Modal toggle
+    const sessions_container = document.querySelector('.sessions-container');
+    const openBtn = document.querySelector('.session-show-button');
+    const closeBtn = document.querySelector('.session-hide-button');
+
+    if (!openBtn || !sessions_container) return;
+
+    openBtn.addEventListener('click', () => {
+        if (sessions_container.classList.contains('hidden')) {
+            sessions_container.classList.remove('hidden');
+            openBtn.innerText = "Hide Sessions";
+        } else {
+            sessions_container.classList.add('hidden');
+            openBtn.innerText = "Show Sessions";
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        openBtn.innerText = "Show Sessions";
+        sessions_container.classList.add('hidden');
+    });
+});
