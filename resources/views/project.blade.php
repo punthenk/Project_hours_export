@@ -76,7 +76,7 @@
                         <button class="session-show-button rounded-md px-2.5 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-950/10">Show sessions</button>
                     </div>
                     <div class="sessions-container hidden">
-                        @foreach ($sessions as $date => $daySessions)
+                        @forelse ($sessions as $date => $daySessions)
                         <p class="my-3">{{ \Carbon\Carbon::parse($date)->format('M j') }}</p>
                         @foreach ($daySessions as $session)
 
@@ -90,7 +90,11 @@
                             </p>
                         </div>
                         @endforeach
-                        @endforeach
+                        @empty
+                            <p class="text-gray-600 text-sm ml-5">There are no sessions yet.</p>
+                        @endforelse
+
+
                         <button class="session-hide-button rounded-md px-2.5 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-950/10">Hide Sessions</button>
                     </div>
                 </div>
