@@ -15,6 +15,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/project/{project}', [ProjectController::class, 'show']);
     Route::put('/task/{task}/toggle', [TaskController::class, 'toggleChecked'])->name('task.toggle');
     Route::put('/task/{task}/update', [TaskController::class, 'update'])->name('task.update');
+    Route::put('/session/{session}/update', [WorkedSessionController::class, 'update'])->name('session.update');
     Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('project.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -61,33 +61,58 @@
                 @endif
             </form>
 
-            <!-- <div class="flex items-center justify-between"> -->
-            <!--     <div> -->
-            <!--         <p class="text-sm text-gray-500 mb-1">Live Timer</p> -->
-            <!--         <p class="text-4xl">00:00:00</p> -->
-            <!--     </div> -->
-            <!--     <button class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2 rounded-md">Start</button> -->
-            <!-- </div> -->
-
             <div class="h-[1px] w-full bg-gray-200"> </div>
             <div class="flex items-center justify-between mt-6">
                 <div class="w-full">
                     <div class="flex justify-between">
                         <button class="session-show-button rounded-md px-2.5 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-950/10">Show sessions</button>
+                        <span class="text-sm text-gray-500">{{ $sessions->flatten(1)->count() }} sessions</span>
                     </div>
                     <div class="sessions-container hidden">
                         @forelse ($sessions as $date => $daySessions)
                         <p class="my-3">{{ \Carbon\Carbon::parse($date)->format('M j') }}</p>
                         @foreach ($daySessions as $session)
 
-                        <div class="task-item flex w-full items-start justify-between p-4 mb-3 border border-gray-200 rounded-lg">
-                            <p class="text-gray-500">{{ \Carbon\Carbon::parse($session['started_at'])->format('H:i') }} -
-                                {{ \Carbon\Carbon::parse($session['stopped_at'])->format('H:i') }}
+                        <div class="flex w-full items-start justify-between p-4 mb-3 border border-gray-200 rounded-lg">
+                            <p class="text-gray-500">{{ $session['started_at'] }} -
+                                {{ $session['stopped_at'] }}
                                 <span>{{ intdiv($session['duration'] ?? 0, 60) }}h {{ ($session['duration'] ?? 0) % 60 }}m</span>
                             </p>
-                            <p class="text-gray-500">
-                                {{ $task->name }}
-                            </p>
+                            <div class="flex gap-2">
+                                <p class="text-gray-500">
+                                    {{ $session['task_name'] }}
+                                </p>
+                                <button data-slot="button"
+                                    data-id="{{ $session['id'] }}"
+                                    data-task_id="{{ $session['task_id'] }}"
+                                    data-started_at="{{ $session['started_at'] }}"
+                                    data-stopped_at="{{ $session['stopped_at'] }}"
+                                    data-session_date="{{ $session['date'] }}"
+                                    class="change-session-button rounded-md px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-pencil size-4" aria-hidden="true">
+                                        <path
+                                            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z">
+                                        </path>
+                                        <path d="m15 5 4 4"></path>
+                                    </svg></button>
+
+                        <x-popup id="delete-session-{{ $session['id'] }}" title="WARNING"
+                            message="Are you sure you want to delete this session? This action can not be undone and the time you worked on this will be deleted."
+                            confirmText="Delete" confirmRoute="{{ route('sessions.destroy', $session['id']) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trash2 size-4 text-muted-foreground"
+                                aria-hidden="true">
+                                <path d="M10 11v6"></path>
+                                <path d="M14 11v6"></path>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                <path d="M3 6h18"></path>
+                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </x-popup>
+                            </div>
                         </div>
                         @endforeach
                         @empty
@@ -229,6 +254,42 @@
 
                 <div class="flex justify-end gap-2 mt-6">
                     <button type="button" id="cancel-update-task-modal"
+                        class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Update Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="update-session-modal"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <h2 class="text-lg font-semibold mb-4">Edit Task</h2>
+
+            <form class="space-y-4" action="#" method="POST" id="update-session-form">
+                @csrf
+                @method('PUT')
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Started at</label>
+                    <input type="time" name="started_at" placeholder="Started at"
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Stopped at</label>
+                    <input type="time" name="stopped_at" placeholder="Stopped at"
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Date</label>
+                    <input type="date" name="created_at" placeholder=""
+                        class="w-full border-none rounded-lg px-3 py-2 text-sm bg-gray-200">
+                </div>
+                <input type="" name="task_id" class="hidden" value="">
+
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" id="cancel-update-session-modal"
                         class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Cancel</button>
                     <button type="submit" class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Update Task</button>
                 </div>

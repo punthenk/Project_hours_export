@@ -12,6 +12,7 @@ class WorkedSession extends Model
         'started_at',
         'stopped_at',
         'duration',
+        'created_at',
     ];
 
     public function task(): BelongsTo

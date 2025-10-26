@@ -53,9 +53,11 @@ class ProjectController extends Controller
 
         $sessions = $project->tasks->flatMap(fn($task) =>
             $task->workedSession->map(fn($session) => [
+                'task_id' => $task->id,
                 'task_name' => $task->name,
-                'started_at' => $session->started_at,
-                'stopped_at' => $session->stopped_at,
+                'id' =>  $session->id,
+                'started_at' => \Carbon\Carbon::parse($session->started_at)->format('H:i'),
+                'stopped_at' => \Carbon\Carbon::parse($session->stopped_at)->format('H:i'),
                 'duration' => $session->duration,
                 'date' => $session->created_at->toDateString(),
             ])

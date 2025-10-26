@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\WorkedSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class WorkedSessionController extends Controller
 {
@@ -82,9 +83,32 @@ class WorkedSessionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, WorkedSession $session)
     {
-        //
+        $start = \Carbon\Carbon::createFromFormat('H:i', $request['started_at']);
+        $end = \Carbon\Carbon::createFromFormat('H:i', $request['stopped_at']);
+        $duration = $start->diffInMinutes($end);
+
+        Log::debug($start);
+        Log::debug($end);
+        Log::debug($duration);
+
+        $validated = $request->validate([
+            'task_id' => 'required|exists:tasks,id',
+            'started_at' => 'required|date_format:H:i',
+            'stopped_at' => 'required|date_format:H:i|after:started_at',
+            'created_at' => 'required|date',
+        ]);
+        $validated['duration'] = $duration;
+
+        // First update the sessions because else the updateWorkedTime dont work with the new values
+        $session->update($validated);
+
+        $task = Task::find($validated['task_id']);
+        $task->updateWorkedTime();
+
+
+        return redirect()->back();
     }
 
     /**
@@ -92,6 +116,9 @@ class WorkedSessionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $session = Task::findOrFail($id);
+        $session->delete();
+
+        return redirect()->back();
     }
 }

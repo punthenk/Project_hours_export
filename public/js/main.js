@@ -162,15 +162,15 @@ document.addEventListener("DOMContentLoaded", () => {
     openBtn.addEventListener('click', () => {
         if (sessions_container.classList.contains('hidden')) {
             sessions_container.classList.remove('hidden');
-            openBtn.innerText = "Hide Sessions";
+            openBtn.innerText = "Hide sessions";
         } else {
             sessions_container.classList.add('hidden');
-            openBtn.innerText = "Show Sessions";
+            openBtn.innerText = "Show sessions";
         }
     });
 
     closeBtn.addEventListener('click', () => {
-        openBtn.innerText = "Show Sessions";
+        openBtn.innerText = "Show sessions";
         sessions_container.classList.add('hidden');
     });
 });
