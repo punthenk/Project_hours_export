@@ -7,7 +7,8 @@
 
         @vite('resources/css/app.css')
 
-        <title>{{ config('app.name', 'Hours Export') }}</title>
+        <!-- <title>{{ config('app.name', 'Hours Export') }}</title> -->
+        <title>Hours Export</title>
     </head>
     <body class="min-h-screen bg-gray-100 p-8">
         <main>
