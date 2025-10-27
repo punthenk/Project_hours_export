@@ -22,21 +22,26 @@
 
             <div class="">
                 @forelse ($projects as $project)
-                <a href="/project/{{ $project->id }}"
-                    class="group flex items-center gap-6 py-4 px-6 -mx-6 hover:bg-gray-200 transition-colors cursor-pointer border-b border-gray-200 last:border-0 block">
-                    <div class="w-1 h-12 rounded-full shrink-0" style="background-color: {{ $project->color }}"></div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="mb-1 font-semibold">{{ $project->name }}</h3>
-                    </div>
-                    <div class="flex items-center gap-8 shrink-0">
-                        <div class="text-right">
-                            <div class="text-gray-600">Tasks</div>
-                            <div>{{ $project->completed_tasks_count }} / {{ $project->tasks->count() }}</div>
+                <div
+                    class="group flex items-center gap-6 py-4 px-6 -mx-6 hover:bg-gray-200 transition-colors border-b border-gray-200 last:border-0">
+                    <a href="/project/{{ $project->id }}" class="flex items-center gap-6 flex-1 min-w-0 cursor-pointer">
+                        <div class="w-1 h-12 rounded-full shrink-0" style="background-color: {{ $project->color }}">
                         </div>
-                        <div class="text-right min-w-[80px]">
-                            <div class="text-gray-600">Time</div>
-                            <div>{{ $project->total_worked_time }}</div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="mb-1 font-semibold">{{ $project->name }}</h3>
                         </div>
+                        <div class="flex items-center gap-8 shrink-0">
+                            <div class="text-right">
+                                <div class="text-gray-600">Tasks</div>
+                                <div>{{ $project->completed_tasks_count }} / {{ $project->tasks->count() }}</div>
+                            </div>
+                            <div class="text-right min-w-[80px]">
+                                <div class="text-gray-600">Time</div>
+                                <div>{{ $project->total_worked_time }}</div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="flex items-center gap-2 shrink-0">
                         <x-popup id="delete-task-{{ $project->id }}" title="WARNING"
                             message="Are you sure you want to delete this project? This action can not be undone."
                             confirmText="Delete" confirmRoute="{{ route('projects.destroy', $project->id) }}">
@@ -52,10 +57,11 @@
                             </svg>
                         </x-popup>
                         <form action="{{ route('project.export', $project->id) }}" method="GET">
-                            <button id="export-btn" type="submit" class="text-gray-900 rounded-md px-2.5 py-1.5 text-sm font-semibold hover:bg-gray-900 hover:text-white transition">Export</button>
+                            <button id="export-btn" type="submit"
+                                class="text-gray-900 rounded-md px-2.5 py-1.5 text-sm font-semibold hover:bg-gray-900 hover:text-white transition">Export</button>
                         </form>
                     </div>
-                </a>
+                </div>
                 @empty
                 <p>No projects yet. Create one!</p>
                 @endforelse
@@ -85,7 +91,8 @@
                 <div class="flex justify-end gap-2">
                     <button type="button" id="modal-cancel"
                         class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Create</button>
+                    <button type="submit"
+                        class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Create</button>
                 </div>
             </form>
         </div>
