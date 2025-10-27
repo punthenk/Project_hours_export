@@ -51,6 +51,10 @@ class ProjectController extends Controller
     {
         $project = Project::with(['tasks.workedSession'])->findOrFail($id);
 
+        if ($project->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
         $sessions = $project->tasks->flatMap(fn($task) =>
             $task->workedSession->map(fn($session) => [
                 'task_id' => $task->id,
