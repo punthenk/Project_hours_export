@@ -49,7 +49,9 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        $project = Project::with(['tasks.workedSession'])->findOrFail($id);
+        $project = Project::with(['tasks' => function ($task) {
+            $task->latest();
+        }, 'tasks.workedSession'])->findOrFail($id);
 
         if ($project->user_id !== auth()->id()) {
             abort(403, 'Unauthorized');
