@@ -17,6 +17,7 @@
         <script src="{{ asset('js/main.js') }}"></script>
         <script src="{{ asset('js/updateTaskModal.js') }}"></script>
         <script src="{{ asset('js/updateSessionModal.js') }}"></script>
+        <script src="{{ asset('js/exportProjectModal.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
     </body>
 </html>

@@ -6,6 +6,7 @@ use App\Exports\ProjectExport;
 use Maatwebsite\Excel\Excel;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -98,14 +99,19 @@ class ProjectController extends Controller
         return redirect()->back();
     }
 
-    public function export(Project $project, Excel $excel)
+    public function export(Request $request, Project $project, Excel $excel)
     {
         if ($project->user_id !== auth()->id()) {
             abort(403);
         }
 
+        $weekNumber = $request->get('week_number', date('W'));
+        $year = $request->get('year', date('Y'));
+        $includeWeekend = $request->has('include_weekend');
+
         $filename = 'urenregistratie_' . $project->name . '_' . now()->format('Y-m-d') . '.xlsx';
 
-        return $excel->download(new ProjectExport($project), $filename);
+        return $excel->download(
+            new ProjectExport($project, $weekNumber, $year, $includeWeekend), $filename);
     }
 }

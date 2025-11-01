@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/project/{project}/export', [ProjectController::class, 'export'])->name('project.export');
+    Route::post('/project/{project}/export', [ProjectController::class, 'export'])->name('project.export');
 
     Route::get('/', [ProjectController::class, 'index']);
     Route::get('/project/{project}', [ProjectController::class, 'show']);

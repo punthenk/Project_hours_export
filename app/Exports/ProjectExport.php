@@ -14,35 +14,60 @@ class ProjectExport implements FromArray, WithStyles, WithColumnWidths
 {
 
     protected $project;
+    protected $weekNumber;
+    protected $year;
+    protected $includeWeekend;
 
-    public function __construct(Project $project)
+
+    public function __construct(Project $project, $weekNumber = null, $year = null, $includeWeekend = false)
     {
         $this->project = $project;
+        $this->weekNumber = $weekNumber ?? date('W');
+        $this->year = $year ?? date('Y');
+        $this->includeWeekend = $includeWeekend;
+
+        Log::debug($this->weekNumber);
+        Log::debug($this->year);
+        Log::debug($this->includeWeekend);
+        Log::debug($this->project);
     }
 
     public function array(): array
     {
+
+        $weekDates = $this->getWeekDateRange($this->year, $this->weekNumber, $this->includeWeekend);
+        Log::debug($weekDates);
+
         $sessions = $this->project->tasks()
             ->with('workedSession')
             ->get()
-            ->flatMap(function ($task) {
-                return $task->workedSession->map(function ($session) use ($task) {
-                    $session->task_name = $task->name;
-                    return $session;
-                });
+            ->flatMap(function ($task) use ($weekDates) {
+                return $task->workedSession
+                    ->filter(function ($session) use ($weekDates) {
+                        $sessionDate = Carbon::parse($session->created_at);
+                        return $sessionDate->between($weekDates['start'], $weekDates['end']);
+                    })
+                    ->map(function ($session) use ($task) {
+                        $session->task_name = $task->name;
+                        return $session;
+                    });
             });
+
+        Log::debug($sessions);
 
         $groupedByDay = $sessions->groupBy(function ($session) {
             return Carbon::parse($session->created_at)->locale('nl')->dayName;
         });
 
-        // Use lowercase days to match
-        $dutchDays = ['maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag'];
+        // If the weekend days are included there is a different array used
+        $dutchDays = $this->includeWeekend
+            ? ['maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag', 'zondag']
+            : ['maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag'];
 
         $rows = [];
 
         $rows[] = ['Naam: ', auth()->user()->name];
-        $rows[] = ['Periode: ', 'Week '. date("W", time())];
+        $rows[] = ['Periode: ', 'Week '. $this->weekNumber . ' - ' . $this->year];
         $rows[] = ['Module: ', $this->project->name];
         $rows[] = [''];
         $rows[] = [''];
@@ -53,7 +78,6 @@ class ProjectExport implements FromArray, WithStyles, WithColumnWidths
             // Capitalize for display in Excel
             $rows[] = [ucfirst($day), '', '', ''];
 
-            // Check lowercase
             if ($groupedByDay->has($day)) {
                 foreach ($groupedByDay[$day] as $session) {
                     $rows[] = [
@@ -75,7 +99,9 @@ class ProjectExport implements FromArray, WithStyles, WithColumnWidths
 
         $rows[] = [''];
         $rows[] = [''];
-        $rows[] = ['', '', '', 'Totaal gewerkte uren*:', $this->project->total_worked_time];
+
+        $totalHours = $this->calculateTotalHours($sessions);
+        $rows[] = ['', '', '', 'Totaal gewerkte uren*:', $totalHours];
 
 
         $rows[] = ['Conclusie week:'];
@@ -85,6 +111,48 @@ class ProjectExport implements FromArray, WithStyles, WithColumnWidths
         return $rows;
     }
 
+    private function getWeekDateRange($year, $week, $includeWeekend): array
+    {
+        $start = Carbon::now();
+        $start->setISODate($year, $week);
+        $start->startOfWeek();
+
+        $end = Carbon::now();
+        $end->setISODate($year, $week);
+        if ($includeWeekend) {
+            $end->endOfWeek();
+        } else {
+            $end->next(Carbon::FRIDAY)->endOfDay();
+        }
+
+        return [
+            'start' => $start,
+            'end' => $end
+        ];
+    }
+
+    /**
+     * Calculate total hours from sessions
+     */
+    private function calculateTotalHours($sessions): string
+    {
+        $totalMinutes = 0;
+
+        foreach ($sessions as $session) {
+            $start = Carbon::parse($session->started_at);
+            $end = Carbon::parse($session->stopped_at);
+            $totalMinutes += $start->diffInMinutes($end);
+        }
+
+        $hours = intdiv($totalMinutes, 60);
+        $minutes = $totalMinutes % 60;
+
+        return $hours . 'u ' . $minutes . 'm';
+    }
+
+    /**
+     * Calculate hours between two times
+     */
     private function calculateHours($startTime, $endTime): string
     {
         // Parse the times
@@ -109,11 +177,11 @@ class ProjectExport implements FromArray, WithStyles, WithColumnWidths
             'A1:A3' => $bold,
             6 => $bold,
             'D37' => $bold,
-            'A7' => $bold,  // Maandag
-            'A11' => $bold, // Disdag
-            'A16' => $bold, // Woensdag
-            'A21' => $bold, // Donderdag
-            'A29' => $bold, // Vrijdag
+            /* 'A7' => $bold,  // Maandag */
+            /* 'A11' => $bold, // Disdag */
+            /* 'A16' => $bold, // Woensdag */
+            /* 'A21' => $bold, // Donderdag */
+            /* 'A29' => $bold, // Vrijdag */
         ];
     }
 
