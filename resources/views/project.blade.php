@@ -264,7 +264,7 @@
     <div id="update-session-modal"
         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity">
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-            <h2 class="text-lg font-semibold mb-4">Edit Task</h2>
+            <h2 class="text-lg font-semibold mb-4">Edit Session</h2>
 
             <form class="space-y-4" action="#" method="POST" id="update-session-form">
                 @csrf
@@ -291,7 +291,7 @@
                 <div class="flex justify-end gap-2 mt-6">
                     <button type="button" id="cancel-update-session-modal"
                         class="px-4 py-2 text-sm border rounded hover:bg-gray-100">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Update Task</button>
+                    <button type="submit" class="px-4 py-2 text-sm bg-gray-900 text-white rounded hover:bg-gray-800">Update Session</button>
                 </div>
             </form>
         </div>
