@@ -8,6 +8,7 @@ A simple Laravel-based time tracking application that allows users to track work
 -  **Task Tracking** - Add tasks to projects with descriptions
 -  **Time Sessions** - Track start/stop times for each task
 -  **Excel Export** - Export worked hours organized by day of the week
+-  **Extra Export Options** - Like exporting a specific weeknumber and weekend days included or not
 -  **Auto-calculation** - Automatic calculation of total worked time per project
 
 ## Excel Export Format
